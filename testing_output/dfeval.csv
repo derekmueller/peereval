@@ -1,0 +1,32 @@
+group,respondent,name,score,q1,q2,q3,q4,q5,q6,q7,comments
+A-Team,Faceman,Faceman,30.0,5,3,5,3,4,5,5,Very dynamic.  Great at networking
+A-Team,Faceman,Hannibal,31.0,4,5,4,5,3,5,5,I smoked a lot of cigars! 
+A-Team,Faceman,Mr. T,32.0,4,4,5,5,5,5,4,"Had lots of chains to carry around, but did the heavy lifting for the team"
+A-Team,Faceman,Murdock,28.0,4,3,4,2,4,5,6,"Murdock was nice.  Not great at flying a helicopter, but made it work"
+A-Team,Hannibal,Faceman,30.0,5,3,5,3,4,5,5,Very dynamic.  Great at networking
+A-Team,Hannibal,Hannibal,31.0,4,5,4,5,3,5,5,I smoked a lot of cigars! 
+A-Team,Hannibal,Mr. T,32.0,4,4,5,5,5,5,4,"Had lots of chains to carry around, but did the heavy lifting for the team"
+A-Team,Hannibal,Murdock,28.0,4,3,4,2,4,5,6,"Murdock was nice.  Not great at flying a helicopter, but made it work"
+A-Team,Mr. T,Faceman,30.0,5,3,5,3,4,5,5,Very dynamic.  Great at networking
+A-Team,Mr. T,Hannibal,31.0,4,5,4,5,3,5,5,I smoked a lot of cigars! 
+A-Team,Mr. T,Mr. T,32.0,4,4,5,5,5,5,4,"Had lots of chains to carry around, but did the heavy lifting for the team"
+A-Team,Mr. T,Murdock,28.0,4,3,4,2,4,5,6,"Murdock was nice.  Not great at flying a helicopter, but made it work"
+A-Team,Murdock,Faceman,30.0,5,3,5,3,4,5,5,Very dynamic.  Great at networking
+A-Team,Murdock,Hannibal,31.0,4,5,4,5,3,5,5,I smoked a lot of cigars! 
+A-Team,Murdock,Mr. T,32.0,4,4,5,5,5,5,4,"Had lots of chains to carry around, but did the heavy lifting for the team"
+A-Team,Murdock,Murdock,28.0,4,3,4,2,4,5,6,"Murdock was nice.  Not great at flying a helicopter, but made it work"
+J-Team,Jackie,Jackie,27.0,4,4,4,4,4,4,3,comment
+J-Team,Jackie,Jaimie,27.0,4,4,4,4,4,4,3,comment
+J-Team,Jackie,Jimmy,27.0,4,4,4,4,4,4,3,comment
+J-Team,Jackie,Johnny,27.0,4,4,4,4,4,4,3,comment
+J-Team,Jaimie,Jackie,21.0,5,3,4,2,3,2,2,stuff
+J-Team,Jaimie,Jimmy,25.1,1.1,4,5,2,5,4,4,stuff
+J-Team,Jaimie,Johnny,22.0,5,3,4,2,4,3,1,stuff
+J-Team,Jimmy,Jackie,20.0,2,4,2,4,2,2,4,Bla
+J-Team,Jimmy,Jaimie,17.0,2,3,2,3,2,2,3,Bla
+J-Team,Jimmy,Jimmy,16.4,1.1,4,1.1,4,1.1,1.1,4,Bla
+J-Team,Jimmy,Johnny,31.0,4,5,4,5,4,4,5,Bla
+J-Team,Johnny,Jackie,21.0,3,3,3,3,3,3,3,x
+J-Team,Johnny,Jaimie,21.0,3,3,3,3,3,3,3,x
+J-Team,Johnny,Jimmy,21.0,3,3,3,3,3,3,3,s
+J-Team,Johnny,Johnny,6.0,3,3,,,,,,x
