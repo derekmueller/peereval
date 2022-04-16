@@ -2,11 +2,11 @@
 
 **Script for tabulating peer evaluation responses for group work**
 
-The concept and template detailed below are from the [Welcome to My Classroom workshop](https://carleton.ca/tls/2019/welcome-to-my-classroom-using-peer-to-peer-approaches-to-solve-common-assessment-challenges/) by Audrey Girouard (School of Information Technology) and Morgan Rooney (English), Carleton University.  Code was written in Python by Derek Mueller (Geography), Carleton University. 
+The concept and template detailed below are taken from the [Welcome to My Classroom workshop](https://carleton.ca/tls/2019/welcome-to-my-classroom-using-peer-to-peer-approaches-to-solve-common-assessment-challenges/) by Audrey Girouard (School of Information Technology) and Morgan Rooney (English), Carleton University.  Code was written in Python by Derek Mueller (Geography), also at Carleton University. 
 
 
 **The code works as follows:** 
-1. students complete a survey form (Excel xlsx file and and it in)
+1. students complete a survey form (Excel xlsx file and and hand it in)
 2. script reads from a directory of completed Excel forms 
 3. data are concatentated and validated by group and respondent
 3. a "Peer Evaluation Multiplier" (PEM) is computed
