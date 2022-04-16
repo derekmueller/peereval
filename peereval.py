@@ -3,41 +3,18 @@
 """
 peer_eval.py
 
-Script to:
-    1) take data from an directory of completed Excel forms 
-    2) concatentate and validate the data
-    3) compute participation multiplier
-    4) output all the records in a csv file
+Script for tabulating peer evaluation responses for group work
 
-Assumptions:     
-* Template modifications are captured correctly in the code below (row,col of data cells)
-* Works for groups of up to 8 students (must allow entry into more rows)
-* Works for seven criteria (Q1 to Q7) and a comment for each team member - all weighted equally
-* Can handle a single response to a text-based course/group level question
-* Assumes all files are in the same folder, saved as *.xlsx with unique name
-* Overwriting output files is ok
-* That all forms are completed properly (there is some error checking, not much)
+The concept and template detailed below are from the [Welcome to My Classroom workshop](https://carleton.ca/tls/2019/welcome-to-my-classroom-using-peer-to-peer-approaches-to-solve-common-assessment-challenges/) by Audrey Girouard (School of Information Technology) and Morgan Rooney (English), Carleton University.  Code was written in Python by Derek Mueller (Geography), Carleton University. 
 
-Template Preparation: 
- Original template was modified in Libre Office (Excel would work too)
-*Lay out the form in a suitable way
- -Highlight fields to be completed with grey
-*Add validation under Data/Validity 
- -Use list for group name and team member names (creates a dropdown selection) 
-     --https://www.youtube.com/watch?v=9i_-ErFVffs
- -Put a valid range in for the answers to Q1 to Q7
- -Note that not allowing empty cells doesn't seem to work
-*Allow edits to only grey cells
- -Protect all cells, then unprotect the grey ones
- -Protect the entire sheet -- Note password is "Muskoka"
- --https://help.libreoffice.org/6.1/en-US/text/scalc/guide/cell_protect.html
+**The code works as follows:** 
+1. students complete a survey form (Excel xlsx file and and it in)
+2. script reads from a directory of completed Excel forms 
+3. data are concatentated and validated by group and respondent
+3. a "Peer Evaluation Multiplier" (PEM) is computed
+4. all the records are output to csv files
 
-
-Acknowledgements: 
-*Used concept and template from Morgan Rooney and Audrey Girouard, Carleton University
-*Python code below under GNU GPLv3 Licence
-*Author Derek Mueller, Carleton University
-*Created April 2022
+See readme.md for more info
 
 """
 
@@ -73,11 +50,11 @@ def readform(f):
     # open file as pandas df 
     df = pd.read_excel(f)
     # knowing the format will stay the same, hard code the cell addresses
-    respondent = df.iloc[2,2]  # name of respondent
+    respondent = df.iloc[2,2]  # member of respondent
     group = df.iloc[4,2]  # group
     feedback = df.iloc[9,11]  # overall feedback question
 
-    names=df.iloc[17:25,1]  # team member names
+    members=df.iloc[17:25,1]  # team member members
     arr = df.iloc[17:25,2:9]  # question array - q1 to q7
     #avg = df.iloc[17:25,10]  # the average (which we will calculate in python)
     comments = df.iloc[17:25,11]  # comments on team members 
@@ -86,14 +63,14 @@ def readform(f):
     grp_feedback = pd.DataFrame({'group':  [group], 'respondent': [respondent], 'feedback': [feedback]})
     
     #combine into team member dataframe
-    team_eval = pd.concat([names,arr,comments],axis=1)
+    team_eval = pd.concat([members,arr,comments],axis=1)
     team_eval = team_eval.dropna(how='all')  # remove all blank rows
     team_eval.insert(0,'respondent',value=respondent)  # add the respondent as a column
     team_eval.insert(0,'group',value=group) # add the group as a column
-    #name the columns
-    team_eval.columns = ['group','respondent','name','q1','q2','q3','q4','q5','q6','q7','comments']
-    
-    return team_eval, grp_feedback
+    #member the columns
+    team_eval.columns = ['group','respondent','member','q1','q2','q3','q4','q5','q6','q7','comments']
+        
+    return team_eval.reset_index(drop=True), grp_feedback.reset_index(drop=True)
 
 
 def dataValid(dfeval):
@@ -123,7 +100,7 @@ def dataValid(dfeval):
             print('  Checking form from {}'.format(member))
             ### Every group should have the same team members across all respondents
             m = dfeval.loc[(dfeval['group'] == grp) & 
-                           (dfeval['respondent'] == member)]['name'].sort_values().to_numpy()
+                           (dfeval['respondent'] == member)]['member'].sort_values().to_numpy()
             if not np.array_equal(gmembers,m):
                 print('  ...Problem with form from {}, check that all group members are listed'.format(member))
             ### all data should be there    
@@ -136,42 +113,50 @@ def dataValid(dfeval):
 
     print('\n Data checking complete.  If there were issues, be sure to address them before finalizing the analysis \n')
 
-def calcPEM(dfeval):    
+def calcPEM(dfeval, dfmember):    
     """
     Calculates the Peer Evaluation Multiplier (PEM) for each group member
 
     Parameters
     ----------
-    dfeval : dataframe
-        dataframe from the readeval function
+    dfeval : pandas dataframe
+        dataframe from the readeval function (raw eval data)
+
+    dfmember : pandas dataframe
+        dataframe with one row per each member
 
     Returns
     -------
     score_avg : dataframe
-        a dataframe with group, name, score and pem
+        a dataframe with group, member, score, pem, avg score per q1-7, and feedback response
 
     """
 
    
     # create column 'score' which gives the sum of all the scores from q1 to q7
     dfeval.insert(3,'score', dfeval[['q1','q2','q3','q4','q5','q6','q7']].sum(axis=1))
-    
+    # these fields are not needed... so remove
+    dfeval = dfeval.drop ( ['respondent', 'comments'], axis = 1) 
     # get the average score per group member
-    score_avg = dfeval.groupby(['group', 'name'])[['score']].mean().round(2)
-    
+    score_avg = dfeval.groupby(['group', 'member']).agg(['mean']).round(4)
+    # reset column index - they are all means
+    score_avg.columns = score_avg.columns.droplevel(1)
     # make new column for the Peer Evaluation Multiplier (PEM)
-    score_avg = score_avg.assign(pem=0)
+    score_avg.insert(0,'pem',0)
     
     # get the average score per group
     grp_avg = dfeval.groupby(['group'])[['score']].mean()
     
-    
     # calculate the pem and add it to the dataframe
     for grp in dfeval.groupby(['group']).groups.keys():
         pem = score_avg.loc[[grp],'score']/grp_avg.loc[[grp],'score']
-        score_avg.loc[grp,['pem']] = pem.round(3)
-
-
+        score_avg.loc[grp,['pem']] = pem.round(4)
+    
+    #merge the respondent feedback with score_avg dataframe
+    dfmember.columns = ['group','member','feedback']  # fix col names
+    dfmember = dfmember.set_index(['group','member'])  # create matching index
+    score_avg = pd.concat([score_avg, dfmember], axis=1, join ="inner") #merge
+    
     return score_avg
 
 
@@ -202,26 +187,26 @@ if __name__ == '__main__':
         sys.exit(1)
 
     # create empty dataframes        
-    dfeval = pd.DataFrame(columns=['group','respondent','name','q1','q2','q3','q4','q5','q6','q7','comments'])
-    dfgroup = pd.DataFrame(columns=['group', 'respondent', 'feedback'])
+    dfeval = pd.DataFrame(columns=['group','respondent','member','q1','q2','q3','q4','q5','q6','q7','comments'])
+    dfmember = pd.DataFrame(columns=['group', 'respondent', 'feedback'])
 
     for f in xlist:
         #read each file and add them to a larger dataframe
         t, g = readform(f)
-        dfgroup = pd.concat([dfgroup,g])
+        dfmember = pd.concat([dfmember,g])
         dfeval = pd.concat([dfeval,t])
         del [t,g]  # remove temporary data frames
     
-    dfeval = dfeval.sort_values(['group','respondent', 'name'])
-    dfgroup = dfgroup.sort_values(['group','respondent'])    
+    dfeval = dfeval.sort_values(['group','respondent', 'member'])
+    dfmember = dfmember.sort_values(['group','respondent'])    
     
     #check to see if the data are valid
     dataValid(dfeval)
-    score_pem = calcPEM(dfeval)
+    #calculate everything
+    score_pem = calcPEM(dfeval, dfmember)
     
     ##export the dataframes
-    dfgroup.to_csv('dfgroup.csv', index=False)
-    dfeval.to_csv('dfeval.csv', index=False)
+    dfeval.to_csv('peereval.csv', index=False)
     score_pem.to_csv('pem.csv')
     
     print('Completed calculations and data export... \n')

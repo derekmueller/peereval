@@ -1,4 +1,4 @@
-group,respondent,name,score,q1,q2,q3,q4,q5,q6,q7,comments
+group,respondent,member,score,q1,q2,q3,q4,q5,q6,q7,comments
 A-Team,Faceman,Faceman,30.0,5,3,5,3,4,5,5,Very dynamic.  Great at networking
 A-Team,Faceman,Hannibal,31.0,4,5,4,5,3,5,5,I smoked a lot of cigars! 
 A-Team,Faceman,Mr. T,32.0,4,4,5,5,5,5,4,"Had lots of chains to carry around, but did the heavy lifting for the team"
