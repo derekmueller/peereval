@@ -2,7 +2,7 @@
 
 **Script for tabulating peer evaluation responses for group work**
 
-The concept and template detailed below are taken from the [Welcome to My Classroom workshop](https://carleton.ca/tls/2019/welcome-to-my-classroom-using-peer-to-peer-approaches-to-solve-common-assessment-challenges/) by Audrey Girouard (School of Information Technology) and Morgan Rooney (English), Carleton University.  Code was written in Python by Derek Mueller (Geography), also at Carleton University. 
+The concept and template detailed below are taken from the [Welcome to My Classroom workshop](https://carleton.ca/tls/2019/welcome-to-my-classroom-using-peer-to-peer-approaches-to-solve-common-assessment-challenges/) by Audrey Girouard (School of Information Technology) and Morgan Rooney (English), Carleton University. Audrey got the idea for the peer evaluation multiplier from the late Anthony Whitehead (School of Information Technology).  Code was written in Python by Derek Mueller (Geography and Environmental Studies), also at Carleton University. 
 
 
 **The code works as follows:** 
